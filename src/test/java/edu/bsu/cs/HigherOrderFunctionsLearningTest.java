@@ -92,7 +92,7 @@ public class HigherOrderFunctionsLearningTest {
     public void testCountByDate() {
         Instant instant = Instant.parse("2021-03-01T00:00:00.00Z");
         Stream<Revision> input = getRevisions("soup04.json");
-        long actual = 0;
+        long actual = input.filter(x -> x.timestamp.isBefore(instant)).count();
         int expected = 3;
         Assertions.assertEquals(expected, actual);
     }
@@ -127,7 +127,7 @@ public class HigherOrderFunctionsLearningTest {
     public void testCountWhitelisted() {
         List<String> whitelist = List.of("Sleepy Beauty", "Spencer", "QueasyQ");
         Stream<Revision> input = getRevisions("soup30.json");
-        long actual = 0;
+        long actual = input.filter(x -> whitelist.contains(x.user)).count();
         int expected = 3;
         Assertions.assertEquals(expected, actual);
     }
@@ -138,7 +138,7 @@ public class HigherOrderFunctionsLearningTest {
     @Test
     public void testCountNonBots() {
         Stream<Revision> input = getRevisions("soup30.json");
-        long actual = 0;
+        long actual = input.filter(x -> !x.user.toLowerCase().contains("bot")).count();
         int expected = 26;
         Assertions.assertEquals(expected, actual);
     }
