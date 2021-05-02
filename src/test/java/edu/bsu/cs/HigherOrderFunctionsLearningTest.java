@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -149,7 +151,7 @@ public class HigherOrderFunctionsLearningTest {
     @Test
     public void testCountChangesInFebruary() {
         Stream<Revision> input = getRevisions("soup30.json");
-        long actual = 0;
+        long actual = input.filter(x -> x.timestamp.atZone(ZoneId.systemDefault()).query(LocalDateTime::from).getMonth().equals(Month.FEBRUARY)).count();
         int expected = 9;
         Assertions.assertEquals(expected, actual);
     }
