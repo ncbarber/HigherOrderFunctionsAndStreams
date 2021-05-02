@@ -69,7 +69,7 @@ public class HigherOrderFunctionsLearningTest {
     @Test
     public void testDistinct() {
         Stream<String> input = Stream.of("a1", "a2", "a3", "b1", "b2", "b3");
-        List<String> actual = null;
+        List<String> actual = input.map(str -> str.substring(0, 1)).distinct().collect(Collectors.toList());
         List<String> expected = List.of("a", "b");
         Assertions.assertIterableEquals(expected, actual);
     }
@@ -80,7 +80,7 @@ public class HigherOrderFunctionsLearningTest {
     @Test
     public void testConcatEven() {
         Stream<String> input = Stream.of("a1", "a2", "a3", "b1", "b2", "b3");
-        String actual = null;
+        String actual = input.filter(str -> Integer.parseInt(str.substring(1))%2 == 0).collect(Collectors.joining());
         String expected = "a2b2";
         Assertions.assertEquals(expected, actual);
     }
