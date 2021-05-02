@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -162,7 +163,7 @@ public class HigherOrderFunctionsLearningTest {
     @Test
     public void testCountChangesByMonth() {
         Stream<Revision> input = getRevisions("soup04.json");
-        Map<Month, Long> actual = null;
+        Map<Month, Long> actual = input.collect(Collectors.groupingBy(x->x.timestamp.atZone(ZoneId.of("UTC")).getMonth(),Collectors.counting()));
         Map<Month, Long> expected = Map.of(Month.FEBRUARY, 3L, Month.MARCH, 1L);
         Assertions.assertEquals(expected, actual);
     }
@@ -174,7 +175,7 @@ public class HigherOrderFunctionsLearningTest {
     @Test
     public void testDetermineMostActiveMonth() {
         Stream<Revision> input = getRevisions("soup30.json");
-        Month actual = null;
+        Month actual = Collections.max(input.collect(Collectors.groupingBy(x -> x.timestamp.atZone(ZoneId.of("UTC")).getMonth(),Collectors.counting())).entrySet(), Map.Entry.comparingByValue()).getKey();
         Month expected = Month.FEBRUARY;
         Assertions.assertEquals(expected, actual);
     }
